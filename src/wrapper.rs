@@ -38,6 +38,15 @@ impl<T: Serialize + DeserializeOwned + Default> JsonStruct<T> {
         };
     }
 
+    /// Tries to load struct at given location. If the location doesn't exists, it will be created with default struct
+    pub fn try_load(path: &str) -> JsonStruct<T> {
+        return if std::path::Path::new(&path).exists() {
+            Self::load(path)
+        } else {
+            Self::new(path, T::default())
+        }
+    }
+
     /// This loads a struct at the given location. If the JSON Data isn't an exact match with the defined struct, default values are used for everything missing.
     pub fn load(path: &str) -> JsonStruct<T> {
         let obj: Result<T, _> = serde_json::from_slice(&*read(path).unwrap());
