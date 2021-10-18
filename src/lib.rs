@@ -1,5 +1,5 @@
 mod wrapper;
-use wrapper::*;
+pub use wrapper::*;
 
 #[cfg(test)]
 mod tests {
